@@ -26,9 +26,9 @@ The calibration routine can be run from within another script like this::
 
     cc.calibrate(dir, rows, cols, win, save, outdir, space, visualize)
 
-============= ========= ==========
+============= ========= ========================================================
 Arg           Type      Use
-============= ========= ==========
+============= ========= ========================================================
 ``dir``       ``str``   The directory where the image sources are
 ``rows``      ``int``   The number of internal corners on the grid vertically
 ``cols``      ``int``   The number of internal corners on the grid horizontally
@@ -37,6 +37,7 @@ Arg           Type      Use
 ``outdir``    ``str``   Where to save output
 ``space``     ``float`` The grid spacing in mm
 ``visualize`` ``bool``  Whether or not to visualize output while running
+============= ========= ========================================================
 
 To use as a standalone command line utility:
 -----------------------------------------------
