@@ -11,7 +11,6 @@ Some tips:
 To Install:
 -----------
  #. Clone the repository or download the zip
- #. Enter the main directory
  #. run: ``python setup.py install
 
 That's it!!
