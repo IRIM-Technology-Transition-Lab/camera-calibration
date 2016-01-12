@@ -169,10 +169,16 @@ def calibrate(dir, rows, cols, win, save, outdir, space, visualize):
     #########################################################################
     print "\n"
     print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Intrinsic Matrix:"
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(newcameramtx)
+    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(mtx)
     print "\n"
     print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Distortion Matrix:"
     print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(dist)
+    print "\n"
+    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Optimal Camera Matrix:"
+    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(newcameramtx)
+    print "\n"
+    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Optimal Camera Matrix Crop:"
+    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(roi)
 
     # Calculate Reprojection Error
     tot_error = 0
@@ -187,13 +193,20 @@ def calibrate(dir, rows, cols, win, save, outdir, space, visualize):
     if save:
         resulttxt = open(outdir + '\\result.txt', 'w')
         resulttxt.write("Intrinsic Matrix:\n")
-        np.savetxt(resulttxt,newcameramtx,'%E')
+        np.savetxt(resulttxt,mtx,'%E')
         resulttxt.write("\n\n")
         resulttxt.write("Distortion Matrix:\n")
         np.savetxt(resulttxt,dist,'%E')
         resulttxt.write("\n\n")
+        resulttxt.write("Optimal Camera Matrix:\n")
+        np.savetxt(resulttxt,newcameramtx,'%E')
+        resulttxt.write("\n\n")
+        resulttxt.write("Optimal Camera Matrix Crop:\n")
+        np.savetxt(resulttxt,roi,'%i')
+        resulttxt.write("\n\n")
         resulttxt.write("Reprojection Error:  ")
         resulttxt.write(str(mean_error))
+
         resulttxt.close()
 
 
