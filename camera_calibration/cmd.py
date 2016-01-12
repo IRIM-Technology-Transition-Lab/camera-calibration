@@ -8,7 +8,7 @@ def main():
     #Parse in arguments
     parser = argparse.ArgumentParser(description='Calibrate Images', epilog="This software is designed to calibrate a camera based on images fed in from a folder. Images should be of a grid of white and black squares. It works best if there is a white border around the grid and if the number of columns and rows is different. This can work with any camera, just put the calibration images in a folder and run this script. For best results you need atleast calibratable images.")
 
-    parser.add_argument("--dir", metavar="directory", type = str , help='The directory of images to calibrate off of.', default = "")
+    parser.add_argument("--dir", metavar="directory", type = str , help='The directory of images to calibrate off of.', default = "\\")
 
     parser.add_argument("-s","--spacing", type = float, help = "The grid spacing in mm." , required = True)
 

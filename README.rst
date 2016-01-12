@@ -41,3 +41,7 @@ Arg           Type      Use
 To use as a standalone command line utility:
 -----------------------------------------------
 This system can also be used from the commandline. Once the system is installed, so long as python is on your path, it can be run very simply. For more information, run ``calibrate-camera -h`` from the commandline/terminal
+
+Thanks:
+-----------------------------------------------------------
+This is heavily based on `This Tutorial <http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html#goal>`_
