@@ -10,6 +10,7 @@ import os
 import numpy as np
 import cv2
 from colorama import init, Fore, Back, Style
+import json
 
 
 def calibrate(directory, rows, cols, win, save, directory_out, space,
@@ -236,6 +237,13 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
             result_text_file.write("\n\n")
             result_text_file.write("Re-projection Error:  ")
             result_text_file.write(str(mean_error))
+        json_dict = {"intrinsic": camera_matrix,
+                     "distortion": distortion_coefficients,
+                     "optimal": new_camera_matrix,
+                     "crop": roi,
+                     "error": mean_error}
+        with open(directory_out + '\\result.json', 'w') as result_json_file:
+            json.dump(json_dict, result_json_file, indent=4)
 
     print(Style.RESET_ALL)
     cv2.destroyAllWindows()
