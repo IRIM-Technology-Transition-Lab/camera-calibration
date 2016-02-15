@@ -10,7 +10,8 @@ setup(name='camera_calibration',
       description='A basic script to run camera calibration on images in a '
                   'folder.',
       long_description=readme(),
-      url='',
+      url='https://github.com/IRIM-Technology-Transition-Lab/'
+          'camera-calibration.git',
       author='Michael Sobrepera',
       author_email='mjsobrep@live.com',
       license='License :: OSI Approved :: MIT License',
