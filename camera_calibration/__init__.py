@@ -262,6 +262,9 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
 
     if save:
         with open(directory_out + '\\result.txt', 'w') as result_text_file:
+            result_text_file.write("Grid: Rows: {}, Cols: {}, Spacing: {}:\n"
+                                   .format(rows, cols, space))
+            result_text_file.write("Time: {}\n".format(datetime.datetime.now()))
             result_text_file.write("Intrinsic Matrix:\n")
             np.savetxt(result_text_file, camera_matrix, '%E')
             result_text_file.write("\n\n")
