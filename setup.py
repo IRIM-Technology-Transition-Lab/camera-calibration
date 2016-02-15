@@ -13,7 +13,7 @@ setup(name='camera_calibration',
       url='',
       author='Michael Sobrepera',
       author_email='mjsobrep@live.com',
-      license='TBD',
+      license='License :: OSI Approved :: MIT License',
       packages=['camera_calibration'],
       install_requires=[
           'argparse',
