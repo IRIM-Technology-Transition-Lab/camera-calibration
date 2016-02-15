@@ -255,7 +255,11 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
             result_text_file.write("\n\n")
             result_text_file.write("Re-projection Error:  ")
             result_text_file.write(str(mean_error))
-        json_dict = {"intrinsic": camera_matrix,
+
+        json_dict = {"grid": {"rows": rows,
+                              "cols": cols,
+                              "spacing": space},
+                     "intrinsic": camera_matrix,
                      "distortion": distortion_coefficients,
                      "optimal": new_camera_matrix,
                      "crop": roi,
