@@ -29,10 +29,31 @@ import numpy as np
 import cv2
 from colorama import init, Fore, Back, Style
 import json
+import datetime
 
 
 def calibrate(directory, rows, cols, win, save, directory_out, space,
               visualize):
+    """Calibrate a camera based on the images in directory
+
+    If save is set, then the resulting data (as txt and json files), along with
+    undistorted versions of the input images will be saved to directory_out.
+    The sysstem only works in rows != cols. Most instructions will be printed to
+    the terminal during execution.
+
+    Args:
+        directory (str): Where are the images stored
+        rows (int): The number of internal corners in the vertical direction
+        cols (int): The number of internal corners in the horizontal direction
+        win (int): Half of the side length of the search window for subpixel
+            accuracy corner detection. For example, if win=5, then a
+            5*2+1 x 5*2+1 = 11 x 11 search window is used.
+        save (bool): Whether to save output
+        directory_out (str): Where to save output
+        space (float): The spacing between squares on the grid.
+        visualize (bool): Whether to visualize output as the script is running.
+    """
+
     # Setup colored output
     init()
 
@@ -259,10 +280,11 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
         json_dict = {"grid": {"rows": rows,
                               "cols": cols,
                               "spacing": space},
-                     "intrinsic": camera_matrix,
-                     "distortion": distortion_coefficients,
-                     "optimal": new_camera_matrix,
-                     "crop": roi,
+                     "time": str(datetime.datetime.now()),
+                     "intrinsic": camera_matrix.tolist(),
+                     "distortion": distortion_coefficients.tolist(),
+                     "optimal": new_camera_matrix.tolist(),
+                     "crop": roi.tolist(),
                      "error": mean_error}
         with open(directory_out + '\\result.json', 'w') as result_json_file:
             json.dump(json_dict, result_json_file, indent=4)
