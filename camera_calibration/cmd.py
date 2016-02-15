@@ -29,6 +29,7 @@ import argparse
 
 
 def main():
+    """Main entry point from the terminal to run the calibration routine."""
     # Parse in arguments
     parser = argparse.ArgumentParser(
         description='Calibrate Images',
