@@ -159,18 +159,23 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
 
                 # Draw, display, and save the corners
                 color_image = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
-                if corners2 is not None:
-                    image_points.append(corners2)
-                    print (Style.BRIGHT + Back.GREEN +
-                           "\t\tfound sub-pixel corners")
-                    color_image = cv2.drawChessboardCorners(color_image,
-                                                            (cols, rows),
-                                                            corners2,
-                                                            re_projection_error)
-                else:
-                    print (Style.BRIGHT + Back.RED +
-                           "\t\tunable to find sub-pixel corners")
 
+                # depending on the version of OpenCV, cv2.cornerSubPix may
+                # return none, in which case, it modified corners (how
+                # un-Pythonic)
+                if corners2 is None:
+                    corners2 = corners
+
+                image_points.append(corners2)
+                print (Style.BRIGHT + Back.GREEN +
+                       "\t\tfound sub-pixel corners")
+                new_color_image = cv2.drawChessboardCorners(color_image,
+                                                        (cols, rows),
+                                                        corners2,
+                                                        re_projection_error)
+                # OpenCV 2 vs 3
+                if new_color_image is not None:
+                    color_image = new_color_image
                 if save:
                     cv2.imwrite(directory_out + "/grid" + str(number_found) +
                                 ".jpg", color_image)
