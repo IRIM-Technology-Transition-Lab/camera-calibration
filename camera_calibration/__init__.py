@@ -276,7 +276,8 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
            str(mean_error))
 
     if save:
-        with open(directory_out + '\\result.txt', 'w') as result_text_file:
+        with open(os.path.join(directory_out, 'result.txt'), 'w') as \
+                result_text_file:
             result_text_file.write("Grid: Rows: {}, Cols: {}, Spacing: {}:\n"
                                    .format(rows, cols, space))
             result_text_file.write("Time: {}\n".format(datetime.datetime.now()))
@@ -304,7 +305,8 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                      "optimal": new_camera_matrix.tolist(),
                      "crop": roi,
                      "error": mean_error}
-        with open(directory_out + '\\result.json', 'w') as result_json_file:
+        with open(os.path.join(directory_out, 'result.json'), 'w') as \
+                result_json_file:
             json.dump(json_dict, result_json_file, indent=4)
 
     print(Style.RESET_ALL)
