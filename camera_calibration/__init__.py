@@ -218,7 +218,7 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
     print Style.BRIGHT + Back.CYAN + "Beginning Undistort"
     i = 0
     for image_file in file_names:
-        image_file = target_directory + image_file
+        image_file = os.path.join(target_directory, image_file)
 
         # Try to read in image as gray scale
         img = cv2.imread(image_file, 0)
