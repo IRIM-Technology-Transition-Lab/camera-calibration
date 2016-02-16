@@ -114,7 +114,8 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
 
     # Check if output directory exists, if not, make it.
     if save:
-        print Style.BRIGHT + Back.MAGENTA + "\nSaving output to: " + directory_out
+        print (Style.BRIGHT + Back.MAGENTA + "\nSaving output to: " +
+               directory_out)
         if not os.path.exists(directory_out):
             os.makedirs(directory_out)
             print Style.BRIGHT + Back.GREEN + "\tMade a new output directory"
@@ -301,7 +302,7 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                      "intrinsic": camera_matrix.tolist(),
                      "distortion": distortion_coefficients.tolist(),
                      "optimal": new_camera_matrix.tolist(),
-                     "crop": roi.tolist(),
+                     "crop": roi,
                      "error": mean_error}
         with open(directory_out + '\\result.json', 'w') as result_json_file:
             json.dump(json_dict, result_json_file, indent=4)
