@@ -178,8 +178,9 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                 if new_color_image is not None:
                     color_image = new_color_image
                 if save:
-                    cv2.imwrite(directory_out + "/grid" + str(number_found) +
-                                ".jpg", color_image)
+                    cv2.imwrite(os.path.join(directory_out, "grid" +
+                                             str(number_found) + ".jpg"),
+                                color_image)
                 if visualize:
                     cv2.imshow('Image with Corners', color_image)
                     cv2.waitKey(5000)
@@ -238,7 +239,8 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
             x, y, w, h = roi
             dst = dst[y:y+h, x:x+w]
             if save:
-                cv2.imwrite(directory_out + "/undistort" + str(i) + ".jpg", dst)
+                cv2.imwrite(os.path.join(directory_out, "undistort" + str(i) +
+                                         ".jpg"), dst)
             if visualize:
                 cv2.imshow('Undistorted Image', dst)
                 cv2.waitKey(5000)
