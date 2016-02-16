@@ -5,7 +5,7 @@ calibration data based on the images.
 
 Some tips:
  * Use an asymmetric grid (different number of rows and cols). Don't worry
-   if you already have a grid that is symetric, just cover a row or column with
+   if you already have a grid that is symmetric, just cover a row or column with
    white paper or tape.
  * Use a grid with a white border around it.
  * Take more images than you think you will need. Often, some images fail.
@@ -13,20 +13,26 @@ Some tips:
 
 To Install:
 -----------
+Using PIP (recommended):
+........................
+coming soon!!
+
+Using SetupTools:
+.................
  #. Clone the repository or download the zip
  #. run: ``python setup.py install``
 
-That's it!!
-
-At a later time, I would like to open source this and put it on PyPi
+    **A Note on virtualenv**: When using a virtual env, one must copy their cv2.so
+    (linux) or cv2.pyd (windows) file into the virtual environment at
+    Lib/site-packages
 
 To use within another python script:
 ------------------------------------
 The calibration routine can be run from within another script like this::
 
-    import camera_calibration as cc
+>>> import camera_calibration as cc
 
-    cc.calibrate(dir, rows, cols, win, save, outdir, space, visualize)
+>>> cc.calibrate(dir, rows, cols, win, save, outdir, space, visualize)
 
 ============= ========= ========================================================
 Arg           Type      Use
@@ -55,6 +61,8 @@ This is heavily based on `This Tutorial <http://opencv-python-tutroals.
 
 License:
 --------
+The MIT License (MIT)
+
 Copyright (c) 2016 GTRC.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
