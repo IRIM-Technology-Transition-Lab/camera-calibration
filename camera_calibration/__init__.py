@@ -156,19 +156,21 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                 # Get sub-pixel accuracy corners
                 corners2 = cv2.cornerSubPix(img, corners, (win, win), (-1, -1),
                                             criteria)
-                if corners2:
-                    image_points.append(corners2)
-                    print Style.BRIGHT + Back.GREEN + "\t\tfound sub-pixel corners"
-                else:
-                    print Style.BRIGHT + Back.RED + "\t\tunable to find sub-pixel corners"
 
                 # Draw, display, and save the corners
                 color_image = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
-                if corners2:
+                if corners2 is not None:
+                    image_points.append(corners2)
+                    print (Style.BRIGHT + Back.GREEN +
+                           "\t\tfound sub-pixel corners")
                     color_image = cv2.drawChessboardCorners(color_image,
-                                                        (cols, rows),
-                                                        corners2,
-                                                        re_projection_error)
+                                                            (cols, rows),
+                                                            corners2,
+                                                            re_projection_error)
+                else:
+                    print (Style.BRIGHT + Back.RED +
+                           "\t\tunable to find sub-pixel corners")
+
                 if save:
                     cv2.imwrite(directory_out + "/grid" + str(number_found) +
                                 ".jpg", color_image)
