@@ -72,13 +72,16 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
     print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "\nWelcome\n"
 
     # Figure out where the images are and get all file_names for that directory
-    target_directory = os.getcwd() + "\\" + directory + "\\"
-    directory_out = os.getcwd() + "\\" + directory_out
-    print "Searching for images in: " + target_directory + "\n"
+    target_directory = os.path.join(os.getcwd(), directory)
+    directory_out = os.path.join(os.getcwd(), directory_out)
+    print "Searching for images in: " + target_directory
     file_names = os.listdir(target_directory)
+    print "Found Images:"
+    for name in file_names:
+        print "\t"+name
 
     if visualize:
-        print ("\tYou have enabled visualizations.\n\tEach visualization will "
+        print ("\nYou have enabled visualizations.\n\tEach visualization will "
                "pause the software for 5 seconds.\n\tTo continue prior to the "
                "5 second time, press any key.")
 
@@ -111,7 +114,7 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
 
     # Check if output directory exists, if not, make it.
     if save:
-        print Style.BRIGHT + Back.MAGENTA + "Saving output to: " + directory_out
+        print Style.BRIGHT + Back.MAGENTA + "\nSaving output to: " + directory_out
         if not os.path.exists(directory_out):
             os.makedirs(directory_out)
             print Style.BRIGHT + Back.GREEN + "\tMade a new output directory"
@@ -120,7 +123,7 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
     #########################################################################
     image_size = None
     for image_file in file_names:
-        image_file = target_directory + image_file
+        image_file = os.path.join(target_directory, image_file)
 
         # Try to read in image as gray scale
         img = cv2.imread(image_file, 0)
@@ -153,12 +156,16 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                 # Get sub-pixel accuracy corners
                 corners2 = cv2.cornerSubPix(img, corners, (win, win), (-1, -1),
                                             criteria)
-                image_points.append(corners2)
-                print Style.BRIGHT + Back.GREEN + "\t\tfound sub-pixel corners"
+                if corners2:
+                    image_points.append(corners2)
+                    print Style.BRIGHT + Back.GREEN + "\t\tfound sub-pixel corners"
+                else:
+                    print Style.BRIGHT + Back.RED + "\t\tunable to find sub-pixel corners"
 
                 # Draw, display, and save the corners
                 color_image = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
-                color_image = cv2.drawChessboardCorners(color_image,
+                if corners2:
+                    color_image = cv2.drawChessboardCorners(color_image,
                                                         (cols, rows),
                                                         corners2,
                                                         re_projection_error)
