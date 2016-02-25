@@ -7,7 +7,7 @@ from colorama import init, Fore, Back, Style
 #Based on example at: http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
 
 
-def calibrate(dir, rows, cols, win, save, outdir, space, visualize):
+def calibrate(dir, rows, cols, win, save, outdir, space, visualize, circles):
     # Setup colored output
     init()
 
@@ -57,8 +57,11 @@ def calibrate(dir, rows, cols, win, save, outdir, space, visualize):
     # Setup windows for visualization
     if visualize:
         cv2.namedWindow("Raw Image", cv2.WINDOW_NORMAL)
-        cv2.namedWindow("Image with Corners", cv2.WINDOW_NORMAL)
         cv2.namedWindow("Undistorted Image", cv2.WINDOW_NORMAL)
+        if circles:
+            cv2.namedWindow("Image with Centers", cv2.WINDOW_NORMAL)
+        else:
+            cv2.namedWindow("Image with Corners", cv2.WINDOW_NORMAL)
 
     # Check if output directory exists, if not, make it.
     if save:
@@ -83,12 +86,18 @@ def calibrate(dir, rows, cols, win, save, outdir, space, visualize):
                 cv2.imshow('Raw Image',img)
                 cv2.waitKey(5000)
 
-            # Find chessboard corners. 9: cv2.CALIB_CB_FAST_CHECK + cv2.CV_CALIB_CB_ADAPTIVE_THRESH
-            ret, corners = cv2.findChessboardCorners(img, (rows,cols),9)
+            if circles:
+                # Find circle centers.
+                ret, centers = cv2.findCirclesGrid(img, (rows,cols))
+            else:
+                # Find chessboard corners. 9: cv2.CALIB_CB_FAST_CHECK + cv2.CV_CALIB_CB_ADAPTIVE_THRESH
+                ret, corners = cv2.findChessboardCorners(img, (rows,cols),9)
+
+
 
             # If we found chessboard corners lets work on them
             if ret:
-                print Style.BRIGHT + Back.GREEN + "\tfound corners"
+                print Style.BRIGHT + Back.GREEN + "\tfound corners or centers"
                 objpoints.append(objp)
 
                 # Since this is a good image, we will take its size as the image size
@@ -97,21 +106,25 @@ def calibrate(dir, rows, cols, win, save, outdir, space, visualize):
                 # We found another good image
                 numFound = numFound + 1
 
-                # Get subpixel accuracy corners
-                corners2 = cv2.cornerSubPix(img,corners,(win,win),(-1,-1),criteria)
-                imgpoints.append(corners2)
-                print Style.BRIGHT + Back.GREEN + "\t\tfound subpixel corners"
+                if not circles:
+                    # Get subpixel accuracy corners
+                    corners2 = cv2.cornerSubPix(img,corners,(win,win),(-1,-1),criteria)
+                    imgpoints.append(corners2)
+                    print Style.BRIGHT + Back.GREEN + "\t\tfound subpixel corners"
 
                 # Draw, display, and save the corners
                 colorimg = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
-                colorimg = cv2.drawChessboardCorners(colorimg, (cols,rows), corners2,ret)
+                if circles:
+                    colorimg = cv2.drawChessboardCorners(colorimg, (cols,rows), centers,ret)
+                else:
+                    colorimg = cv2.drawChessboardCorners(colorimg, (cols,rows), corners2,ret)
                 if save:
                     cv2.imwrite(outdir + "/grid" + str(numFound) + ".jpg", colorimg)
                 if visualize:
-                    cv2.imshow('Image with Corners',colorimg)
+                    cv2.imshow('Image with Centers or Corners',colorimg)
                     cv2.waitKey(5000)
             else:
-                print Style.BRIGHT + Back.RED + "\tcould not find corners"
+                print Style.BRIGHT + Back.RED + "\tcould not find corners or centers"
             print "\n"
 
     # Check how many good images we found

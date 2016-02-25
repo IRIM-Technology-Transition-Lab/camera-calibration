@@ -24,6 +24,8 @@ def main():
 
     parser.add_argument("-v", "--visualize", help = "Whether to show visualizations", action = 'store_true')
 
+    parser.add_argument("-cir", "--circles", help = "Whether to use a circle calibration grid", action = 'store_true')
+
     args = parser.parse_args()
 
     camera_calibration.calibrate(
@@ -34,4 +36,5 @@ def main():
     outdir = args.outdir,
     space = args.spacing,
     visualize = args.visualize,
+    circles = args.circles,
     dir = args.dir)
