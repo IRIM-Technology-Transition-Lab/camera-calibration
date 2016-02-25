@@ -106,7 +106,9 @@ def calibrate(dir, rows, cols, win, save, outdir, space, visualize, circles):
                 # We found another good image
                 numFound = numFound + 1
 
-                if not circles:
+                if circles:
+                    imgpoints.append(centers)
+                else:
                     # Get subpixel accuracy corners
                     corners2 = cv2.cornerSubPix(img,corners,(win,win),(-1,-1),criteria)
                     imgpoints.append(corners2)
