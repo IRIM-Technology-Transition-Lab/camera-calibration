@@ -62,10 +62,10 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
     init()
 
     if len(directory_out) and (directory_out[0] == '/' or
-                                       directory_out[0] == '\\'):
+                               directory_out[0] == '\\'):
         directory_out = directory_out[1:]
     if len(directory_out) and (directory_out[-1] == '/' or
-                                       directory_out[-1] == '\\'):
+                               directory_out[-1] == '\\'):
         directory_out = directory_out[:-1]
 
     if len(directory) and (directory[0] == '/' or directory[0] == '\\'):
@@ -117,7 +117,6 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
         cv2.namedWindow("Image with " + ("Centers" if circles else "Corners"),
                         cv2.WINDOW_NORMAL)
 
-
     # Check if output directory exists, if not, make it.
     if save:
         print (Style.BRIGHT + Back.MAGENTA + "\nSaving output to: " +
@@ -156,7 +155,7 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
             # If we found chessboard corners lets work on them
             if re_projection_error:
                 print (Style.BRIGHT + Back.GREEN + "\tfound " +
-                      ("centers" if circles else "corners"))
+                       ("centers" if circles else "corners"))
                 object_points.append(object_point)
 
                 # Since this is a good image, we will take its size as the

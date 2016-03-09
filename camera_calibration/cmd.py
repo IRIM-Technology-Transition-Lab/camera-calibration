@@ -61,7 +61,7 @@ def main():
                              "localization of the corners", default=11)
 
     parser.add_argument("--save", help="Whether to save image output",
-                        action='store_true')
+                        action='store_true', default=True)
 
     parser.add_argument("--outdir", type=str, help="Where to save image output",
                         default="output")
