@@ -1,7 +1,7 @@
 camera_calibration
 ==================
-This library takes in images of a grid in a folder and generates camera
-calibration data based on the images.
+This library takes in images of a chessboard or grid of circles in a folder and
+generates camera calibration data based on the images.
 
 Some tips:
  * Use an asymmetric grid (different number of rows and cols). Don't worry
@@ -45,6 +45,7 @@ Arg           Type      Use
 ``outdir``    ``str``   Where to save output
 ``space``     ``float`` The grid spacing in mm
 ``visualize`` ``bool``  Whether or not to visualize output while running
+``circles``   ``bool``  Whether to use a circle grid
 ============= ========= ========================================================
 
 To use as a standalone command line utility:
