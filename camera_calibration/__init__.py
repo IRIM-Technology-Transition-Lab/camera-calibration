@@ -32,7 +32,7 @@ import json
 import datetime
 
 
-def calibrate(directory, rows, cols, space, win=5, save=True,
+def calibrate(directory, rows, cols, space, win=11, save=True,
               directory_out='out', visualize=False, circles=False):
     """Calibrate a camera based on the images in directory
 
