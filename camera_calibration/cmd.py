@@ -70,7 +70,9 @@ def main():
                         help="Whether to show visualizations",
                         action='store_true')
 
-    parser.add_argument("-cir", "--circles", help="Whether to use a circle calibration grid", action='store_true')
+    parser.add_argument("--circles", type=bool,
+                        help="Whether to use a circle calibration grid",
+                        action='store_true', default=False)
 
     args = parser.parse_args()
 

@@ -32,8 +32,8 @@ import json
 import datetime
 
 
-def calibrate(directory, rows, cols, win, save, directory_out, space,
-              visualize, circles):
+def calibrate(directory, rows, cols, space, win=5, save=True,
+              directory_out='out', visualize=False, circles=False):
     """Calibrate a camera based on the images in directory
 
     If save is set, then the resulting data (as txt and json files), along with
@@ -52,17 +52,20 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
         directory_out (str): Where to save output
         space (float): The spacing between squares on the grid.
         visualize (bool): Whether to visualize output as the script is running.
-        circles (cir): Whether to use a circle calibration grid
+        circles (bool): Whether to use a circle calibration grid
     """
     # Based on example at:
-    # http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
+    # http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/
+    # py_calib3d/py_calibration/py_calibration.html
 
     # Setup colored output
     init()
 
-    if len(directory_out) and (directory_out[0] == '/' or directory_out[0] == '\\'):
+    if len(directory_out) and (directory_out[0] == '/' or
+                                       directory_out[0] == '\\'):
         directory_out = directory_out[1:]
-    if len(directory_out) and (directory_out[-1] == '/' or directory_out[-1] == '\\'):
+    if len(directory_out) and (directory_out[-1] == '/' or
+                                       directory_out[-1] == '\\'):
         directory_out = directory_out[:-1]
 
     if len(directory) and (directory[0] == '/' or directory[0] == '\\'):
@@ -95,7 +98,8 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
     object_point = np.zeros((cols * rows, 3), np.float32)
-    object_point[:, :2] = np.mgrid[0:(rows * space):space, 0:(cols * space):space].T.reshape(-1, 2)
+    object_point[:, :2] = np.mgrid[0:(rows * space):space,
+                                   0:(cols * space):space].T.reshape(-1, 2)
 
     number_found = 0  # How many good images are there?
 
@@ -110,10 +114,9 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
     if visualize:
         cv2.namedWindow("Raw Image", cv2.WINDOW_NORMAL)
         cv2.namedWindow("Undistorted Image", cv2.WINDOW_NORMAL)
-        if circles:
-            cv2.namedWindow("Image with Centers", cv2.WINDOW_NORMAL)
-        else:
-            cv2.namedWindow("Image with Corners", cv2.WINDOW_NORMAL)
+        cv2.namedWindow("Image with " + ("Centers" if circles else "Corners"),
+                        cv2.WINDOW_NORMAL)
+
 
     # Check if output directory exists, if not, make it.
     if save:
@@ -142,16 +145,18 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
 
             if circles:
                 # Find circle centers.
-                re_projection_error, centers = cv2.findCirclesGrid(img, (rows, cols))
+                re_projection_error, centers = \
+                    cv2.findCirclesGrid(img, (rows, cols))
             else:
-                # Find chessboard corners. 9: cv2.CALIB_CB_FAST_CHECK +
+                # Find chessboard corners. 9 = cv2.CALIB_CB_FAST_CHECK +
                 # cv2.CV_CALIB_CB_ADAPTIVE_THRESH
                 re_projection_error, corners = cv2.findChessboardCorners(
                     img, (rows, cols), 9)
 
             # If we found chessboard corners lets work on them
             if re_projection_error:
-                print Style.BRIGHT + Back.GREEN + "\tfound corners or centers"
+                print (Style.BRIGHT + Back.GREEN + "\tfound " +
+                      ("centers" if circles else "corners"))
                 object_points.append(object_point)
 
                 # Since this is a good image, we will take its size as the
@@ -162,23 +167,21 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                 number_found += 1
 
                 if circles:
-
                     image_points.append(centers)
 
                     # Draw, display, and save the corners
                     color_image = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
 
-                    new_color_image = cv2.drawChessboardCorners(color_image,
-                                                                (cols, rows),
-                                                                centers,
-                                                                re_projection_error)
+                    new_color_image = \
+                        cv2.drawChessboardCorners(color_image, (cols, rows),
+                                                  centers, re_projection_error)
                     # OpenCV 2 vs 3
                     if new_color_image is not None:
                         color_image = new_color_image
                 else:
                     # Get subpixel accuracy corners
-                    corners2 = cv2.cornerSubPix(img, corners, (win, win), (-1, -1),
-                                                criteria)
+                    corners2 = cv2.cornerSubPix(img, corners, (win, win),
+                                                (-1, -1), criteria)
 
                     # Draw, display, and save the corners
                     color_image = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
@@ -192,10 +195,9 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                     image_points.append(corners2)
                     print (Style.BRIGHT + Back.GREEN +
                            "\t\tfound sub-pixel corners")
-                    new_color_image = cv2.drawChessboardCorners(color_image,
-                                                                (cols, rows),
-                                                                corners2,
-                                                                re_projection_error)
+                    new_color_image = \
+                        cv2.drawChessboardCorners(color_image, (cols, rows),
+                                                  corners2, re_projection_error)
                     # OpenCV 2 vs 3
                     if new_color_image is not None:
                         color_image = new_color_image
@@ -205,10 +207,13 @@ def calibrate(directory, rows, cols, win, save, directory_out, space,
                                              str(number_found) + ".jpg"),
                                 color_image)
                 if visualize:
-                    cv2.imshow('Image with Centers or Corners', color_image)
+                    cv2.imshow("Image with " +
+                               ("Centers" if circles else "Corners"),
+                               color_image)
                     cv2.waitKey(5000)
             else:
-                print Style.BRIGHT + Back.RED + "\tcould not find corners or centers"
+                print (Style.BRIGHT + Back.RED + "\tcould not find " +
+                       ("Centers" if circles else "Corners"))
             print "\n"
 
     # Check how many good images we found
