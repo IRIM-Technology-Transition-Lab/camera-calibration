@@ -15,7 +15,7 @@ To Install:
 -----------
 Using PIP (recommended):
 ........................
-coming soon!!
+``pip install camera_calibration``
 
 Using SetupTools:
 .................
@@ -30,9 +30,8 @@ To use within another python script:
 ------------------------------------
 The calibration routine can be run from within another script like this::
 
-`import camera_calibration as cc`
-
-`cc.calibrate(dir, rows, cols, win, save, outdir, space, visualize)`
+   import camera_calibration as cc``
+   cc.calibrate(dir, rows, cols, win, save, outdir, space, visualize)
 
 ============= ========= ========================================================
 Arg           Type      Use
@@ -56,9 +55,13 @@ information, run ``calibrate-camera -h`` from the commandline/terminal
 
 Thanks:
 -------
-This is heavily based on `This Tutorial <http://opencv-python-tutroals.
-                          readthedocs.org/en/latest/py_tutorials/py_calib3d/
-                          py_calibration/py_calibration.html#goal>`_
+This is heavily based on `This Tutorial <http://opencv-python-tutroals.readthedocs.org/
+en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html#goal>`_.
+
+Contributors:
+-------------
+- Michael Sobrepera
+- Toni Cvitanic
 
 License:
 --------
