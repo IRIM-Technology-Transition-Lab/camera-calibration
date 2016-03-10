@@ -30,8 +30,8 @@ To use within another python script:
 ------------------------------------
 The calibration routine can be run from within another script like this::
 
-   import camera_calibration as cc``
-   cc.calibrate(dir, rows, cols, win, save, outdir, space, visualize)
+   import camera_calibration as cc
+   cc.calibrate(dir, rows, cols, win, save, outdir, space, visualize, circles)
 
 ============= ========= ========================================================
 Arg           Type      Use
