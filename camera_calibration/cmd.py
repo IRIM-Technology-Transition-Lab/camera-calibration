@@ -35,11 +35,11 @@ def main():
         description='Calibrate Images',
         epilog="This software is designed to calibrate a camera based on images"
                " fed in from a folder. Images should be of a grid of white and"
-               " black squares. It works best if there is a white border around"
-               " the grid and if the number of columns and rows is different. "
-               "This can work with any camera, just put the calibration images"
-               " in a folder and run this script. For best results you need"
-               " at least calibratable images.")
+               " black squares or circles. It works best if there is a white"
+               " border around the grid and if the number of columns and rows"
+               " is different. This can work with any camera, just put the"
+               " calibration images in a folder and run this script. For best"
+               " results you need at least 10 calibratable images.")
 
     parser.add_argument("--dir", metavar="directory", type=str,
                         help='The directory of images to calibrate off of.',
@@ -61,7 +61,7 @@ def main():
                              "localization of the corners", default=11)
 
     parser.add_argument("--save", help="Whether to save image output",
-                        action='store_true')
+                        action='store_true', default=True)
 
     parser.add_argument("--outdir", type=str, help="Where to save image output",
                         default="output")
@@ -69,6 +69,10 @@ def main():
     parser.add_argument("-v", "--visualize",
                         help="Whether to show visualizations",
                         action='store_true')
+
+    parser.add_argument("--circles",
+                        help="Whether to use a circle calibration grid",
+                        action='store_true', default=False)
 
     args = parser.parse_args()
 
@@ -80,4 +84,5 @@ def main():
         directory_out=args.outdir,
         space=args.spacing,
         visualize=args.visualize,
+        circles=args.circles,
         directory=args.dir)
