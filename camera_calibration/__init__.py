@@ -149,7 +149,7 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
             else:
                 # Find chessboard corners.
                 re_projection_error, corners = cv2.findChessboardCorners(
-                    img, (rows, cols), cv2.CALIB_CB_FAST_CHECK + cv2.CALIB_CB_ADAPTIVE_THRESH)
+                    img, (rows, cols), flags=cv2.CALIB_CB_FAST_CHECK + cv2.CALIB_CB_ADAPTIVE_THRESH)
 
             # If we found chessboard corners lets work on them
             if re_projection_error:

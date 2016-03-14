@@ -86,3 +86,7 @@ def main():
         visualize=args.visualize,
         circles=args.circles,
         directory=args.dir)
+
+
+if __name__ == "__main__":
+    main()
