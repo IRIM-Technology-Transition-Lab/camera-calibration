@@ -6,7 +6,7 @@ def readme():
         return f.read()
 
 setup(name='camera_calibration',
-      version='0.1',
+      version='0.2',
       description='A basic script to run camera calibration on images in a '
                   'folder.',
       long_description=readme(),
