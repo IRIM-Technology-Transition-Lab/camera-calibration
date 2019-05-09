@@ -61,28 +61,15 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
     # Setup colored output
     init()
 
-    if len(directory_out) and (directory_out[0] == '/' or
-                               directory_out[0] == '\\'):
-        directory_out = directory_out[1:]
-    if len(directory_out) and (directory_out[-1] == '/' or
-                               directory_out[-1] == '\\'):
-        directory_out = directory_out[:-1]
-
-    if len(directory) and (directory[0] == '/' or directory[0] == '\\'):
-        directory = directory[1:]
-    if len(directory) and (directory[-1] == '/' or directory[-1] == '\\'):
-        directory = directory[:-1]
-
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "\nWelcome\n"
+    print(Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "\nWelcome\n")
 
     # Figure out where the images are and get all file_names for that directory
-    target_directory = os.path.join(os.getcwd(), directory)
-    directory_out = os.path.join(os.getcwd(), directory_out)
-    print "Searching for images in: " + target_directory
+    target_directory = directory
+    print("Searching for images in: " + target_directory)
     file_names = os.listdir(target_directory)
-    print "Found Images:"
+    print("Found Images:")
     for name in file_names:
-        print "\t" + name
+        print("\t" + name)
 
     if visualize:
         print ("\nYou have enabled visualizations.\n\tEach visualization will "
@@ -91,9 +78,9 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
 
     # Check grid symmetry
     if rows == cols:
-        print (Style.BRIGHT + Back.RED + "It is best to use an asymmetric grid,"
-                                         " rows and cols should be different")
-        print(Style.RESET_ALL)
+        print((Style.BRIGHT + Back.RED + "It is best to use an asymmetric grid,"
+                                         " rows and cols should be different"))
+        print((Style.RESET_ALL))
         exit()
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
@@ -119,12 +106,12 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
 
     # Check if output directory exists, if not, make it.
     if save:
-        print (Style.BRIGHT + Back.MAGENTA + "\nSaving output to: " +
-               directory_out)
+        print((Style.BRIGHT + Back.MAGENTA + "\nSaving output to: " +
+               directory_out))
         if not os.path.exists(directory_out):
             os.makedirs(directory_out)
-            print Style.BRIGHT + Back.GREEN + "\tMade a new output directory"
-        print "\n"
+            print(Style.BRIGHT + Back.GREEN + "\tMade a new output directory")
+        print("\n")
 
     #########################################################################
     image_size = None
@@ -136,7 +123,7 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
 
         # If the image_file isn't an image, move on
         if img is not None:
-            print Style.BRIGHT + Back.CYAN + "searching image: " + image_file
+            print(Style.BRIGHT + Back.CYAN + "searching image: " + image_file)
 
             if visualize:
                 cv2.imshow('Raw Image', img)
@@ -153,8 +140,8 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
 
             # If we found chessboard corners lets work on them
             if re_projection_error:
-                print (Style.BRIGHT + Back.GREEN + "\tfound " +
-                       ("centers" if circles else "corners"))
+                print((Style.BRIGHT + Back.GREEN + "\tfound " +
+                       ("centers" if circles else "corners")))
                 object_points.append(object_point)
 
                 # Since this is a good image, we will take its size as the
@@ -191,8 +178,8 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
                         corners2 = corners
 
                     image_points.append(corners2)
-                    print (Style.BRIGHT + Back.GREEN +
-                           "\t\tfound sub-pixel corners")
+                    print((Style.BRIGHT + Back.GREEN +
+                           "\t\tfound sub-pixel corners"))
                     new_color_image = \
                         cv2.drawChessboardCorners(color_image, (cols, rows),
                                                   corners2, re_projection_error)
@@ -210,25 +197,25 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
                                color_image)
                     cv2.waitKey(5000)
             else:
-                print (Style.BRIGHT + Back.RED + "\tcould not find " +
-                       ("Centers" if circles else "Corners"))
-            print "\n"
+                print((Style.BRIGHT + Back.RED + "\tcould not find " +
+                       ("Centers" if circles else "Corners")))
+            print("\n")
 
     # Check how many good images we found
     if number_found >= 10:
-        print (Style.BRIGHT + Back.GREEN + "Found " + str(number_found) +
-               " calibratable images.")
+        print((Style.BRIGHT + Back.GREEN + "Found " + str(number_found) +
+               " calibratable images."))
     elif number_found == 0:
-        print (Style.BRIGHT + Back.RED + "Found " + str(number_found) +
-               " calibratable images. \nNow Exiting")
-        print(Style.RESET_ALL)
+        print((Style.BRIGHT + Back.RED + "Found " + str(number_found) +
+               " calibratable images. \nNow Exiting"))
+        print((Style.RESET_ALL))
         exit()
     else:
-        print (Style.BRIGHT + Back.YELLOW + "Found " + str(number_found) +
-               " calibratable images.")
+        print((Style.BRIGHT + Back.YELLOW + "Found " + str(number_found) +
+               " calibratable images."))
 
     #######################################################################
-    print Style.BRIGHT + Back.CYAN + "Beginning Calibration"
+    print(Style.BRIGHT + Back.CYAN + "Beginning Calibration")
 
     # Execute calibration
     (re_projection_error, camera_matrix, distortion_coefficients,
@@ -241,7 +228,7 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
         camera_matrix, distortion_coefficients, (w, h), 1, (w, h))
 
     # Go through all images and undistort them
-    print Style.BRIGHT + Back.CYAN + "Beginning Undistort"
+    print(Style.BRIGHT + Back.CYAN + "Beginning Undistort")
     i = 0
     for image_file in file_names:
         image_file = os.path.join(target_directory, image_file)
@@ -251,7 +238,7 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
 
         # If the image_file isn't an image, move on
         if img is not None:
-            print Style.BRIGHT + Back.CYAN + "undistorting image: " + image_file
+            print(Style.BRIGHT + Back.CYAN + "undistorting image: " + image_file)
 
             if visualize:
                 cv2.imshow('Raw Image', img)
@@ -274,24 +261,24 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
             i += 1
 
     #########################################################################
-    print "\n"
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Intrinsic Matrix:"
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(camera_matrix)
-    print "\n"
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Distortion Matrix:"
-    print (Fore.WHITE + Style.BRIGHT + Back.MAGENTA +
-           str(distortion_coefficients))
-    print "\n"
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Optimal Camera Matrix:"
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(new_camera_matrix)
-    print "\n"
-    print (Fore.WHITE + Style.BRIGHT + Back.MAGENTA +
-           "Optimal Camera Matrix Crop:")
-    print Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(roi)
+    print("\n")
+    print(Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Intrinsic Matrix:")
+    print(Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(camera_matrix))
+    print("\n")
+    print(Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Distortion Matrix:")
+    print((Fore.WHITE + Style.BRIGHT + Back.MAGENTA +
+           str(distortion_coefficients)))
+    print("\n")
+    print(Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Optimal Camera Matrix:")
+    print(Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(new_camera_matrix))
+    print("\n")
+    print((Fore.WHITE + Style.BRIGHT + Back.MAGENTA +
+           "Optimal Camera Matrix Crop:"))
+    print(Fore.WHITE + Style.BRIGHT + Back.MAGENTA + str(roi))
 
     # Calculate Re-projection Error
     tot_error = 0
-    for i in xrange(len(object_points)):
+    for i in range(len(object_points)):
         image_points_2, _ = cv2.projectPoints(
             object_points[i], rotation_vectors[i], translation_vectors[i],
             camera_matrix, distortion_coefficients)
@@ -299,9 +286,9 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
                          cv2.NORM_L2) / len(image_points_2)
         tot_error += error
     mean_error = tot_error / len(object_points)
-    print "\n"
-    print (Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Re-projection Error: " +
-           str(mean_error))
+    print("\n")
+    print((Fore.WHITE + Style.BRIGHT + Back.MAGENTA + "Re-projection Error: " +
+           str(mean_error)))
 
     if save:
         with open(os.path.join(directory_out, 'result.txt'), 'w') as \
@@ -337,5 +324,5 @@ def calibrate(directory, rows, cols, space, win=11, save=True,
                 result_json_file:
             json.dump(json_dict, result_json_file, indent=4)
 
-    print(Style.RESET_ALL)
+    print((Style.RESET_ALL))
     cv2.destroyAllWindows()
