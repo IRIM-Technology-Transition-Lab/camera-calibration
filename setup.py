@@ -19,7 +19,7 @@ setup(name='camera_calibration',
       install_requires=[
           'argparse',
           'numpy',
-          'cv2',
+          'opencv-python',
           'colorama'
       ],
       zip_safe=True,
